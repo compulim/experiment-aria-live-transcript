@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <title>Experiment</title>
+    <meta content="width=device-width" name="viewport" />
+    <style type="text/css">
+      .live-region {
+        opacity: 0.5;
+      }
+
+      .transcript {
+        margin: 0;
+        list-style-type: none;
+        padding: 0;
+      }
+
+      .transcript__bot {
+        background-color: magenta;
+        padding: 10px;
+      }
+
+      .transcript__user {
+        background-color: cyan;
+        padding: 10px;
+        text-align: right;
+      }
+    </style>
+  </head>
+  <body>
+    <section aria-atomic="false" aria-live="polite" aria-relevant="additions" class="live-region" role="log"></section>
+    <ul aria-live="off" aria-roledescription="transcript" class="transcript"></ul>
+    <form>
+      <input type="text" placeholder="Type your message" />
+    </form>
+    <script>
+      !(function () {
+        'use strict';
+
+        console.log('Hello, World!');
+
+        document.body.focus();
+
+        const liveRegion = document.querySelector('.live-region');
+        const transcript = document.querySelector('.transcript');
+
+        function addToTranscript(transcriptElement, liveRegionElement) {
+          transcript.append(transcriptElement);
+          liveRegion.append(liveRegionElement);
+        }
+
+        function createElementFromHTML(html) {
+          const element = document.createElement('div');
+
+          element.innerHTML = html;
+
+          return element.childNodes[0];
+        }
+
+        setTimeout(() => {
+          const transcriptElement = createElementFromHTML(`<li class="transcript__bot">
+              <p>Hi, I am Clara.</p>
+              <ul>
+                <li>
+                  <button class="first-button-set" onclick="window.buttonClicked()" type="button">I agree</button>
+                  <br />
+                  <button class="first-button-set" type="button">I don't agree</button>
+                </li>
+              </ul>
+            </li>`);
+
+          const liveRegionElement = createElementFromHTML(`<article aria-atomic="true" aria-roledescription="message">
+              Bot said, Hi, I am Clara.
+              <button tabindex="-1" type="button">I agree</button>
+              <button tabindex="-1" type="button">I don't agree</button>
+            </article>`);
+
+          addToTranscript(transcriptElement, liveRegionElement);
+        }, 1000);
+
+        window.buttonClicked = () => {
+          [].forEach.call(document.querySelectorAll('.first-button-set'), button => {
+            button.setAttribute('aria-disabled', 'true');
+            button.setAttribute('tabindex', '-1');
+            button.setAttribute('style', 'opacity: .5');
+          });
+
+          setTimeout(() => {
+            const transcriptElement = createElementFromHTML(`<li class="transcript__user">
+                <p>I agree.</p>
+              </li>`);
+
+            const liveRegionElement = createElementFromHTML(
+              `<article aria-atomic="true" aria-roledescription="message">User said, I agree.</article>`
+            );
+
+            addToTranscript(transcriptElement, liveRegionElement);
+          }, 100);
+
+          setTimeout(() => {
+            const transcriptElement = createElementFromHTML(`<li class="transcript__bot">
+                <p>Where in the United States?</p>
+                <ul>
+                  <li>
+                    <select>
+                      <option>Please select a location</option>
+                      <option value="HI">Hawaii</option>
+                      <option value="WA">Washington</option>
+                      <option value="WY">Wyoming</option>
+                    </select>
+                    <br />
+                    <button type="button">Submit</button>
+                  </li>
+                </ul>
+              </li>`);
+
+            const liveRegionElement = createElementFromHTML(`<article aria-atomic="true" aria-roledescription="message">
+                Bot said, Where in the United States?
+                <select tabindex="-1">
+                  <option>Please select a location</option>
+                </select>
+              </article>`);
+
+            addToTranscript(transcriptElement, liveRegionElement);
+          }, 2000);
+        };
+      })();
+    </script>
+  </body>
+</html>

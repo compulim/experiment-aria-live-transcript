@@ -1,0 +1,14 @@
+{
+  "name": "experiment-aria-live-transcript",
+  "version": "0.0.0-0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "serve -p 5200"
+  },
+  "author": "William Wong (https://github.com/compulim)",
+  "license": "MIT",
+  "devDependencies": {
+    "serve": "^11.3.2"
+  }
+}
